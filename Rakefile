@@ -17,7 +17,7 @@ task :test => :spec
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
-    gemspec.name = "linode"
+    gemspec.name = "linode-incandescent"
     gemspec.summary = "a Ruby wrapper for the Linode API"
     gemspec.description = "This is a wrapper around Linode's automation facilities."
     gemspec.email = "rick@rickbradley.com"
