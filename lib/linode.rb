@@ -71,7 +71,12 @@ class Linode
 
   def send_unauthenticated_request(action, data)
     data.delete_if {|k,v| [ :api_action, :api_responseFormat].include?(k) }
-    result = Crack::JSON.parse(HTTParty.get(api_url, :query => { :api_action => action, :api_responseFormat => 'json' }.merge(data)))
+    http_response = HTTParty.get(api_url, :query => { :api_action => action, :api_responseFormat => 'json' }.merge(data))
+    begin
+      result = Crack::JSON.parse(http_response)
+    rescue Crack::ParseError => e
+      raise RuntimeError, "Error parsing response:\n" + http_response.inspect
+    end
     raise "Errors completing request [#{action}] @ [#{api_url}] with data [#{data.inspect}]:\n#{error_message(result, action)}" if error?(result)
     reformat_response(result)
   end
